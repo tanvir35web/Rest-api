@@ -41,7 +41,7 @@ app
     if (userIndex !== -1) {
       const updatedUser = { ...users[userIndex], ...req.body };
       users[userIndex] = updatedUser;
-      fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (error, data) => {
+      fs.writeFile("../MOCK_DATA.json", JSON.stringify(users), (error, data) => {
         return res.json({ status: "User Updated Successfully", user: updatedUser });
       });
     } else {
@@ -54,7 +54,7 @@ app
     const userIndex = users.findIndex(user => user.id === id);
     if (userIndex !== -1) {
       users.splice(userIndex, 1);
-      fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (error, data) => {
+      fs.writeFile("../MOCK_DATA.json", JSON.stringify(users), (error, data) => {
         return res.json({ status: "User Deleted Successfully", id });
       });
     } else {
@@ -85,7 +85,7 @@ app.post("/api/users", (req, res) => {
 
   users.push(newUser);
 
-  fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (error) => {
+  fs.writeFile("../MOCK_DATA.json", JSON.stringify(users), (error) => {
     if (error) {
       return res.status(500).json({ error: "Failed to create user" });
     }
