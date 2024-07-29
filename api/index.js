@@ -1,8 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const users = require("../MOCK_DATA.json");
 const fs = require("fs");
 const { type } = require("os");
+const { ObjectId } = require("mongodb")
 
 const app = express();
 const PORT = 8000;
@@ -50,56 +50,57 @@ const User = mongoose.model("user", userSchema)
 app.use(express.urlencoded({ extended: false }));
 
 //Routes
-app.get("/users", (req, res) => {
+app.get("/users", async (req, res) => {
+  const allDbUsers = await User.find({});
   const html = `
   <ul>
-    ${users.map(user => `<li>${user.first_name + " " + user.last_name}</li>`).join("")}
+    ${allDbUsers.map(user => `<li>${user.firstName + " " + user.lastName} - ${user.email} - ${user.isActive ? "Online" : "Offline"}</li>`).join("")}
   </ul>`;
   res.send(html);
 })
 
 //Rest api routes
-app.get("/api/users", (req, res) => {
-  return res.json(users);
+app.get("/api/users", async (req, res) => {
+  const allDbUsers = await User.find({});
+  return res.json(allDbUsers);
 })
 
 app
   .route("/api/users/:id")
-  .get((req, res) => {
+  .get(async (req, res) => {
     //get user with id
-    const id = Number(req.params.id);
-    const user = users.find(user => user.id === id);
+    try {
+      const objectId = new ObjectId(req.params.id);
+      const user = await User.findById(objectId)
+      console.log("User = ", user);
+    if (user === null) {
+      return res.status(404).json({ error: "User not found" });
+    } else {
+      return res.json(user);
+    }
+    } catch (error){
+      console.error("Error retrieving user:", error);
+    return res.status(500).json({ error: "Internal server error" });
+    }
+  })
+
+  .patch(async (req, res) => {
+    //update user with id
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     } else {
       return res.json(user);
     }
   })
-  .patch((req, res) => {
-    //edit user with id
-    const id = Number(req.params.id);
-    const userIndex = users.findIndex(user => user.id === id);
-    if (userIndex !== -1) {
-      const updatedUser = { ...users[userIndex], ...req.body };
-      users[userIndex] = updatedUser;
-      fs.writeFile("../MOCK_DATA.json", JSON.stringify(users), (error, data) => {
-        return res.json({ status: "User Updated Successfully", user: updatedUser });
-      });
-    } else {
-      return res.status(404).json({ error: "User not found" });
-    }
-  })
-  .delete((req, res) => {
+  
+  .delete(async (req, res) => {
     //delete user with id
-    const id = Number(req.params.id);
-    const userIndex = users.findIndex(user => user.id === id);
-    if (userIndex !== -1) {
-      users.splice(userIndex, 1);
-      fs.writeFile("../MOCK_DATA.json", JSON.stringify(users), (error, data) => {
-        return res.json({ status: "User Deleted Successfully", id });
-      });
-    } else {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) {
       return res.status(404).json({ error: "User not found" });
+    } else {
+      return res.json({ status: "User Deleted Successfully"});
     }
   })
 
@@ -125,25 +126,10 @@ app.post("/api/users", async (req, res) => {
     gender: body.gender,
     isActive: body.isActive,
   })
-  
+
   console.log("Result: " + JSON.stringify(result));
   return res.status(201).json({ massage: "Success" });
 
-  // const newUser = {
-  //   id: users.length + 1,
-  //   ...body
-  // };
-  // users.push(newUser);
-  // fs.writeFile("../MOCK_DATA.json", JSON.stringify(users), (error) => {
-  //   if (error) {
-  //     return res.status(500).json({ error: "Failed to create user" });
-  //   }
-  //   return res.json({
-  //     status: "User Created Successfully",
-  //     id: newUser.id
-  //   });
-  // });
-  // console.log(body);
 })
 
 
