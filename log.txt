@@ -1,1 +1,24 @@
-[2024-07-29T20:56:03.659Z] GET /api/users/ - 200
+[30 July 2024 22:55:33] GET /api/users - 200
+[30 July 2024 22:55:33] GET /api/users - 200
+[30 July 2024 22:55:33] GET /api/users/66a7d8475e68bb3733cb203b - 200
+[30 July 2024 22:55:33] GET /api/users/66 - 200
+[30 July 2024 22:55:33] GET /api/users/ - 200
+[30 July 2024 23:29:21] GET /api/users/ - 200
+[30 July 2024 23:29:21] GET /api/users/66a7d8475e68bb3733cb203b - 200
+[30 July 2024 23:29:21] GET /api/users/ - 200
+[30 July 2024 23:29:21] GET /api/users/66a7d8475e68bb3733cb203b - 200
+[30 July 2024 23:29:21] GET /api/users/66a7d8475e68bb3733cb203b - 200
+[30 July 2024 23:29:21] GET /api/users/ - 200
+[30 July 2024 23:29:21] GET /api/users/ - 200
+[30 July 2024 23:29:21] POST /api/users - 200
+[30 July 2024 23:29:21] GET /api/users/ - 200
+[31 July 2024 00:57:51] POST /api/users - 200
+[31 July 2024 00:57:51] GET /api/users/ - 200
+[31 July 2024 00:57:51] GET /api/users/66a937170011312fe1573890 - 200
+[31 July 2024 00:57:51] DELETE /api/users/66a937170011312fe1573890 - 200
+[31 July 2024 00:57:51] GET /api/users/66a937170011312fe1573890 - 200
+[31 July 2024 00:57:51] GET /api/users/ - 200
+[31 July 2024 00:57:51] GET /api/users/66a7d8475e68bb3733cb203b - 200
+[31 July 2024 00:57:51] PATCH /api/users/66a7d8475e68bb3733cb203b - 200
+[31 July 2024 00:57:51] PATCH /api/users/ - 200
+[31 July 2024 00:57:51] GET /api/users/ - 200
